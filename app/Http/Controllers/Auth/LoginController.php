@@ -14,21 +14,12 @@ class LoginController extends Controller
      */
     public function __invoke(LoginRequest $request)
     {
-        if (RateLimiter::tooManyAttempts(key: 'login:' . request()->ip(), maxAttempts: 5)) {
-            return back()->withErrors([
-                'email' => 'You have exceeded the number of attempts. Please try again later.',
-            ])->onlyInput('email');
-        }
-
         $login = app(LoginUserAction::class)->execute($request->validated(), $request->remember_me);
 
         if ($login) {
-            RateLimiter::clear(key: 'login:' . request()->ip());
             return redirect()->intended();
         }
 
-        RateLimiter::increment(key: 'login:' . request()->ip());
-        
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');

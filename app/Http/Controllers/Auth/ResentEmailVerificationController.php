@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\SentEmailVerificationUserAction;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 
 class ResentEmailVerificationController extends Controller
 {
@@ -13,10 +14,16 @@ class ResentEmailVerificationController extends Controller
      */
     public function __invoke()
     {
-        $user= Auth::user();
+        if (RateLimiter::tooManyAttempts(key: 'resentEmailVerification:' . request()->ip(), maxAttempts: 2)) {
+            return back()->with(['status' => 'You have exceeded the number of attempts. Please try again later.', 'type' => 'danger']);
+        }
+
+        $user = Auth::user();
 
         app(SentEmailVerificationUserAction::class)->execute($user->email);
 
-        return back()->with('status', 'verification-link-sent');
+        RateLimiter::increment(key: 'resentEmailVerification:' . request()->ip());
+
+        return back()->with(['status' => 'A new verification link has been sent to your email address.', 'type' => 'success']);
     }
 }

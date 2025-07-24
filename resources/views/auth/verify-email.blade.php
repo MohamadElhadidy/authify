@@ -9,12 +9,12 @@
         </div>
 
 
-
+        
         <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
-
-            @if (session('status') === 'verification-link-sent')
-                <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 text-center">
-                    A new verification link has been sent to your email address.
+            
+            @if (session('status'))
+                <div class="bg-green-100 {{ session('type') === 'danger' ? 'bg-red-200' : 'text-green-800 ' }} px-4 py-2 rounded mb-4 text-center">
+                    {{ session('status') }}
                 </div>
             @endif
 

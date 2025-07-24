@@ -12,6 +12,7 @@ class SentEmailVerificationUserAction
 {
     public function execute(string $email): void
     {
+        
         $user  = User::where('email', $email)->first();
 
         $url = URL::temporarySignedRoute(
@@ -20,6 +21,6 @@ class SentEmailVerificationUserAction
             ['id' => $user->id]
         );
 
-        Mail::to($user->email)->send(new VerifyEmail($user, $url));
+        Mail::to($email)->send(new VerifyEmail($user, $url));
     }
 }

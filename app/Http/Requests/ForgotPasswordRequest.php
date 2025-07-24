@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
-class LoginRequest extends FormRequest
+class ForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,11 +21,10 @@ class LoginRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+     public function rules(): array
     {
         return [
             'email' => 'required|email',
-            'password' => 'required',
         ];
     }
 
@@ -37,8 +36,8 @@ class LoginRequest extends FormRequest
 
     protected function rateLimitCheck(): void
     {
-        $key = 'login' . $this->ip();
-        $maxAttempts = 5;
+        $key = 'forget-password' . $this->ip();
+        $maxAttempts = 2;
         $decaySeconds = 60;
 
         if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {

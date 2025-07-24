@@ -15,6 +15,6 @@ class RegisterController extends Controller
     {
         app(RegisterUserAction::class)->execute($request->validated());
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('status', 'Please check your email to verify your account.');
     }
 }
