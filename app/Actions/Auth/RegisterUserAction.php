@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Auth;
 
 use App\Models\User;
+use App\Services\Auth\EmailVerificationService;
 
 class RegisterUserAction
 {
@@ -10,6 +11,6 @@ class RegisterUserAction
     {
         $user  = User::create($data);
 
-        app(SentEmailVerificationUserAction::class)->execute($user->email);
+        app(EmailVerificationService::class)->send($user->email);
     }
 }

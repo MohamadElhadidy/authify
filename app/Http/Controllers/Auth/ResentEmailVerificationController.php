@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Actions\SentEmailVerificationUserAction;
 use App\Http\Controllers\Controller;
+use App\Services\Auth\EmailVerificationService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 
@@ -20,7 +21,7 @@ class ResentEmailVerificationController extends Controller
 
         $user = Auth::user();
 
-        app(SentEmailVerificationUserAction::class)->execute($user->email);
+        app(EmailVerificationService::class)->send($user->email);
 
         RateLimiter::increment(key: 'resentEmailVerification:' . request()->ip());
 

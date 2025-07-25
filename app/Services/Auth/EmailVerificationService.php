@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace App\Services\Auth;
 
 use App\Mail\VerifyEmail;
 use App\Models\User;
@@ -8,11 +8,11 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 
-class SentEmailVerificationUserAction
+class EmailVerificationService
 {
-    public function execute(string $email): void
+    public function send(string $email): void
     {
-        
+
         $user  = User::where('email', $email)->first();
 
         $url = URL::temporarySignedRoute(
