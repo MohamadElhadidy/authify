@@ -5,18 +5,18 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\Auth\RegisterUserAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Services\Auth\EmailVerificationService;
 
 class RegisterController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(RegisterRequest $request, RegisterUserAction $action)
+    public function __invoke(RegisterRequest $request, RegisterUserAction $action, EmailVerificationService $service)
     {
 
         try {
-            throw new \Exception('Test exception');
-            $action->execute($request->validated());
+            $action->execute($request->validated(), $service);
 
             return redirect()->route('login')->with([
                 'status' => 'success',

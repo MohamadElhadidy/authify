@@ -7,10 +7,10 @@ use App\Services\Auth\EmailVerificationService;
 
 class RegisterUserAction
 {
-    public function execute(array $data): void
+    public function execute(array $data, EmailVerificationService $service): void
     {
         $user  = User::create($data);
 
-        app(EmailVerificationService::class)->send($user->email);
+        $service->send($user->email);
     }
 }
