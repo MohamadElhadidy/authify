@@ -7,11 +7,13 @@
             <img src="{{ asset('images/logo.svg') }}" alt="Your Company" class="mx-auto h-24 w-auto" />
             <h2 class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign in to your account</h2>
         </div>
-        @session('message')
-            <div class="text-center {{ session('status') == 'success' ? 'text-green-700' : 'text-red-700' }} mt-4" role="alert">
+
+       @if (session('message'))
+            <div
+                class="bg-green-100 {{ session('status') === 'error' ? 'bg-red-200' : 'text-green-800 ' }} px-4 py-2 rounded mt-4 text-center">
                 {{ session('message') }}
             </div>
-        @endsession
+        @endif
 
         <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
             <form action="{{ route('login') }}" method="POST" class="space-y-6">
@@ -40,9 +42,13 @@
                         </div>
                     </div>
                     <div class="mt-2">
-                        <input id="password" type="password" name="password" required autocomplete="current-password"
+                        <input id="password" type="password" name="password"  autocomplete="current-password" required
                             class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-black sm:text-sm/6" />
                     </div>
+
+                    @error('password')
+                        <div class="text-red-500 text-sm/6">{{ $message }}</div>
+                    @enderror
                 </div>
 
 

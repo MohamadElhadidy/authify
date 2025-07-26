@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest
 
         if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
             throw ValidationException::withMessages([
-                'email' => ['Too many attempts. Please try again in ' . RateLimiter::availableIn($key) . ' seconds.'],
+                'message' => 'Too many login attempts. Please try again in ' . RateLimiter::availableIn($key) . ' seconds.'
             ]);
         }
 

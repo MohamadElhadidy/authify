@@ -7,6 +7,14 @@
             <img src="{{ asset('images/logo.svg') }}" alt="Your Company" class="mx-auto h-24 w-auto" />
             <h2 class="mt-6 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Reset Password</h2>
         </div>
+
+          @if (session('message'))
+            <div
+                class="bg-green-100 {{ session('status') === 'error' ? 'bg-red-200' : 'text-green-800 ' }} px-4 py-2 rounded mt-4 text-center">
+                {{ session('message') }}
+            </div>
+        @endif
+        
         <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
             <form action="{{ route('reset-password') }}" method="POST" class="space-y-6">
                 @csrf

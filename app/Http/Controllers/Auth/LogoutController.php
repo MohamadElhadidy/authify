@@ -12,7 +12,7 @@ class LogoutController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke()
     {
         Auth::logout();
         return redirect()->route('login');

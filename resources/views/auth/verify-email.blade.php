@@ -12,9 +12,10 @@
         
         <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
             
-            @if (session('status'))
-                <div class="bg-green-100 {{ session('type') === 'danger' ? 'bg-red-200' : 'text-green-800 ' }} px-4 py-2 rounded mb-4 text-center">
-                    {{ session('status') }}
+            @if (session('message'))
+                <div
+                    class="bg-green-100 {{ session('status') === 'error' ? 'bg-red-200' : 'text-green-800 ' }} px-4 py-2 rounded mb-4 text-center">
+                    {{ session('message') }}
                 </div>
             @endif
 
@@ -23,7 +24,8 @@
                 If you didn’t receive the email, click below to resend it.
             </p>
 
-            <form method="POST" action="{{ route('verification.send') }}">
+            <form method="POST" action="{{ route('verification.send') }}"
+                onsubmit="this.querySelector('button').disabled = true;">
                 @csrf
                 <button type="submit"
                     class="flex w-full justify-center rounded-md cursor-pointer bg-black px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">

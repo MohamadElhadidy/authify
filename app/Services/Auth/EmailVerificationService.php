@@ -13,8 +13,11 @@ class EmailVerificationService
 {
     public function send(string $email): void
     {
-
         $user  = User::where('email', $email)->first();
+
+        if (!$user) {
+            throw new \Exception('User not found.');
+        }
 
         $url = URL::temporarySignedRoute(
             'verification.verify.custom',
@@ -22,22 +25,19 @@ class EmailVerificationService
             ['id' => $user->id]
         );
 
-        Mail::to($email)->send(new VerifyEmail($user, $url));
+        Mail::to($email)->queue(new VerifyEmail($user, $url));
     }
 
-    public function verify(Request $request, string $id): bool
+    public function verify(Request $request, string $id): void
     {
         if (!URL::hasValidSignature($request)) {
-            abort(403, 'Invalid or expired verification link.');
+            throw new \Exception('Invalid or expired verification link.');
         }
 
         $user = User::findOrFail($id);
 
-        if (!$user->email_verified_at) {
-            $user->email_verified_at = now();
-            $user->save();
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
         }
-
-        return true;
     }
 }
